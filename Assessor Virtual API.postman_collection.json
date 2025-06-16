@@ -1,0 +1,451 @@
+{
+	"info": {
+		"_postman_id": "74938b95-4a87-4236-840d-b3649ca6d801",
+		"name": "Assessor Virtual API",
+		"description": "Collection completa para testar todos os endpoints da API InMemory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43508351"
+	},
+	"item": [
+		{
+			"name": "Ativos",
+			"item": [
+				{
+					"name": "Listar Ativos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Ativo por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Ativo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Tesouro IPCA+\",\n  \"classe\": \"RENDA_FIXA\",\n  \"retornoHistorico\": 0.065,\n  \"liquidezDias\": 3\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Ativo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Tesouro IPCA+ Atualizado\",\n  \"classe\": \"RENDA_FIXA\",\n  \"retornoHistorico\": 0.07,\n  \"liquidezDias\": 2\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Ativo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Listar Clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Cliente por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Cliente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"João Silva\",\n  \"perfil\": \"MODERADO\",\n  \"liquidezDisponivel\": 15000,\n  \"objetivos\": \"Médio prazo\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Cliente",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"João da Silva\",\n  \"perfil\": \"AGRESSIVO\",\n  \"liquidezDisponivel\": 20000,\n  \"objetivos\": \"Longo prazo\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Variáveis Macro",
+			"item": [
+				{
+					"name": "Listar Variáveis Macro",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Variável Macro por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Variável Macro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"taxaJuros\": 0.06,\n  \"cambio\": 5.20,\n  \"tributos\": 0.15\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Variável Macro",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"taxaJuros\": 0.05,\n  \"cambio\": 5.10,\n  \"tributos\": 0.14\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Variável Macro",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recomendações",
+			"item": [
+				{
+					"name": "Gerar Recomendação",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clienteId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/recomendacoes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"recomendacoes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		}
+	]
+}
