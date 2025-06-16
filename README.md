@@ -4,6 +4,11 @@
 
 > API RESTful para recomendação de carteiras de investimento segundo perfil do investidor.
 ---
+## Alunos:
+* Bruno Venturi Lopes Vieira - 99431
+* Guilherme Alves de Lima - 550433
+* Pedro Guerra de Souza Freitas - 99526
+* Leonardo de Oliveira Ruiz - 98901
 
 ## 📦 Tecnologias
 
