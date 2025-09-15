@@ -1,8 +1,9 @@
 package com.xpinc.assessor.util;
 
 import org.springframework.stereotype.Component;
-import com.xpinc.assessor.domain.Carteira;
-import com.xpinc.assessor.domain.Cliente;
+
+import com.xpinc.assessor.domain.model.Carteira;
+import com.xpinc.assessor.domain.model.Cliente;
 
 @Component
 public class XAIUtil {

@@ -1,9 +1,7 @@
 package com.xpinc.assessor.dto;
 
-public class RecomendacaoRequest {
-    private Long clienteId;
-    public RecomendacaoRequest() {}
-    public RecomendacaoRequest(Long clienteId) { this.clienteId = clienteId; }
-    public Long getClienteId() { return clienteId; }
-    public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
+import com.xpinc.assessor.domain.model.enums.*;
+import jakarta.validation.constraints.*;
+
+public record RecomendacaoRequest(@NotNull PerfilSuitability perfil, @NotNull ObjetivoPrazo prazo) {
 }

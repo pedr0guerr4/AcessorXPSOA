@@ -1,37 +1,34 @@
 package com.xpinc.assessor.service;
 
-import com.xpinc.assessor.domain.Carteira;
-import com.xpinc.assessor.dto.RecomendacaoRequest;
-import com.xpinc.assessor.dto.RecomendacaoResponse;
-import com.xpinc.assessor.exception.ResourceNotFoundException;
-import com.xpinc.assessor.util.XAIUtil;
-import com.xpinc.assessor.service.strategy.StrategyFactory;
+import com.xpinc.assessor.application.ports.*;
+import com.xpinc.assessor.domain.model.*;
+import com.xpinc.assessor.domain.model.enums.*;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class RecomendacaoService {
-    private final ClienteService clienteService;
-    private final StrategyFactory strategyFactory;
-    private final XAIUtil xaiUtil;
+	private final AtivoRepositoryPort ativoRepo;
+	private final CarteiraRepositoryPort carteiraRepo;
 
-    public RecomendacaoService(ClienteService clienteService,
-                               StrategyFactory strategyFactory,
-                               XAIUtil xaiUtil) {
-        this.clienteService = clienteService;
-        this.strategyFactory = strategyFactory;
-        this.xaiUtil = xaiUtil;
-    }
+	public RecomendacaoService(AtivoRepositoryPort ativoRepo, CarteiraRepositoryPort carteiraRepo) {
+		this.ativoRepo = ativoRepo;
+		this.carteiraRepo = carteiraRepo;
+	}
 
-    public RecomendacaoResponse gerar(RecomendacaoRequest req) {
-        var cliente = clienteService.findById(req.getClienteId())
-            .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
-        var strat = strategyFactory.getStrategy(cliente.getPerfil());
-        Carteira carteira = strat.recomendar(cliente);
-        String explicacao = xaiUtil.gerarExplicacao(carteira, cliente);
-        var aloc = carteira.getAlocacao().entrySet().stream()
-            .collect(Collectors.toMap(e -> e.getKey().getNome(), e -> e.getValue()));
-        return new RecomendacaoResponse(aloc, explicacao);
-    }
+	public List<Carteira> recomendar(PerfilSuitability perfil, ObjetivoPrazo prazo) {
+// MVP simples: 3 carteiras
+		var ativos = ativoRepo.findAll();
+// Monte alocações dummy só para prova de conceito
+		List<Carteira> saida = new ArrayList<>();
+		for (String tipo : List.of("conservadora", "balanceada", "arrojada")) {
+			var c = new Carteira();
+			c.setClienteId(1L);
+			c.setDataRef(java.time.LocalDate.now().toString());
+			c = carteiraRepo.save(c);
+// alocação 60/30/10 etc. (omisso)
+			saida.add(c);
+		}
+		return saida;
+	}
 }

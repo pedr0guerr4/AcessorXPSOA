@@ -1,6 +1,6 @@
 package com.xpinc.assessor.dto;
 
-import com.xpinc.assessor.domain.ClasseAtivo;
+import com.xpinc.assessor.domain.model.ClasseAtivo;
 
 public class AtivoDTO {
     private Long id;

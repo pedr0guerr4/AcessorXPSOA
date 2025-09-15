@@ -1,6 +1,6 @@
 package com.xpinc.assessor.controller;
 
-import com.xpinc.assessor.domain.Ativo;
+import com.xpinc.assessor.domain.model.Ativo;
 import com.xpinc.assessor.dto.AtivoDTO;
 import com.xpinc.assessor.service.AtivoService;
 import com.xpinc.assessor.exception.ResourceNotFoundException;

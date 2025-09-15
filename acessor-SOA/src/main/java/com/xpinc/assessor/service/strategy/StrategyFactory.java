@@ -9,7 +9,7 @@ public class StrategyFactory {
     public StrategyFactory(List<RecomendacaoStrategy> strategies) {
         this.strategies = strategies;
     }
-    public RecomendacaoStrategy getStrategy(com.xpinc.assessor.domain.PerfilInvestidor perfil) {
+    public RecomendacaoStrategy getStrategy(com.xpinc.assessor.domain.model.PerfilInvestidor perfil) {
         return strategies.stream().filter(s -> {
             // simplistic match by class name or implement getPerfil if desired
             return true;

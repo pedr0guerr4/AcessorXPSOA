@@ -1,4 +1,4 @@
-package com.xpinc.assessor.domain;
+package com.xpinc.assessor.domain.model;
 
 public class Ativo {
     private Long id;

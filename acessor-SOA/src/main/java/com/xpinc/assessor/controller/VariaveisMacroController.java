@@ -1,6 +1,6 @@
 package com.xpinc.assessor.controller;
 
-import com.xpinc.assessor.domain.VariaveisMacro;
+import com.xpinc.assessor.domain.model.VariaveisMacro;
 import com.xpinc.assessor.dto.VariaveisMacroDTO;
 import com.xpinc.assessor.service.VariaveisMacroService;
 import com.xpinc.assessor.exception.ResourceNotFoundException;

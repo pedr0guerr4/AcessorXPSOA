@@ -1,7 +1,8 @@
 package com.xpinc.assessor.service;
 
-import com.xpinc.assessor.domain.Cliente;
 import org.springframework.stereotype.Service;
+
+import com.xpinc.assessor.domain.model.Cliente;
 
 import java.util.*;
 @Service

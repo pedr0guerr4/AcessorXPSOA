@@ -1,7 +1,8 @@
 package com.xpinc.assessor.service;
 
-import com.xpinc.assessor.domain.VariaveisMacro;
 import org.springframework.stereotype.Service;
+
+import com.xpinc.assessor.domain.model.VariaveisMacro;
 
 import java.util.*;
 @Service

@@ -1,6 +1,6 @@
 package com.xpinc.assessor.dto;
 
-import com.xpinc.assessor.domain.PerfilInvestidor;
+import com.xpinc.assessor.domain.model.PerfilInvestidor;
 
 public class ClienteDTO {
     private Long id;

@@ -1,8 +1,9 @@
 package com.xpinc.assessor.service.strategy;
 
-import com.xpinc.assessor.domain.Carteira;
-import com.xpinc.assessor.domain.Cliente;
 import org.springframework.stereotype.Component;
+
+import com.xpinc.assessor.domain.model.Carteira;
+import com.xpinc.assessor.domain.model.Cliente;
 
 import java.util.Collections;
 @Component

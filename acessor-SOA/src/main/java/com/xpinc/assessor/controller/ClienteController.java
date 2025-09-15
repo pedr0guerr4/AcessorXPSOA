@@ -1,6 +1,6 @@
 package com.xpinc.assessor.controller;
 
-import com.xpinc.assessor.domain.Cliente;
+import com.xpinc.assessor.domain.model.Cliente;
 import com.xpinc.assessor.dto.ClienteDTO;
 import com.xpinc.assessor.service.ClienteService;
 import com.xpinc.assessor.exception.ResourceNotFoundException;
