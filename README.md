@@ -1,105 +1,126 @@
-# Assessor Virtual
+# AcessorXPSOA — Serviço de Assessoria (SOA + Web Services)
 
-&#x20;&#x20;
+Sprint 3 de ARQUITETURA ORIENTADA A SERVICOS E WEB SERVICES. 
 
-> API RESTful para recomendação de carteiras de investimento segundo perfil do investidor.
----
 ## Alunos:
 * Bruno Venturi Lopes Vieira - 99431
 * Guilherme Alves de Lima - 550433
 * Pedro Guerra de Souza Freitas - 99526
 * Leonardo de Oliveira Ruiz - 98901
 
-## 📦 Tecnologias
+## 👀 Visão Geral
+- **Domínio:** Ativos, Clientes, Recomendação de Carteira (Conservador/Moderado/Arrojado).
+- **Banco:** H2 (memória) versionado com Flyway (`ddl-auto: validate`).
+- **Validações:** DTOs com `jakarta.validation` e params com `@Validated`.
+- **Erros:** `@RestControllerAdvice` com payload consistente.
+- **Interface de Acesso:** 
+  - **Postman Collection** e **Environment** (prontos neste repositório/artefato).
+  - Alternativa: **cURL** (script `demo.sh`) e **H2 Console**
 
-* **Java 17**
-* **Spring Boot 3.1.0**
-* **Spring Web**
-* **SpringDoc OpenAPI (Swagger UI)**
-* **Maven 3.6+**
+## ⚙️ Requisitos
+- JDK 17
+- Maven 3.9+
 
----
+## ▶️ Como executar
+```bash
+mvn clean spring-boot:run
+```
+Verifique no log: `Flyway ... Successfully applied ...` e sem exceções.
+H2 Console: `http://localhost:8080/h2`  
+JDBC: `jdbc:h2:mem:assessor` | user: `sa` | senha: *(vazio)*
 
-## 🚀 Começando
+## 🔌 Endpoints principais
+`/api/ativos` — CRUD  
+`/api/clientes` — CRUD  
+`/api/recomendacoes` — Geração de carteira por perfil do cliente  
+`/api/variaveis-macro` (EM DESENVOLVIMENTO) — CRUD  
 
-### Pré-requisitos
+## 🧪 Como **demonstrar o consumo** (Interface de acesso)
+### Opção A — **Postman**
+1. Importe o arquivo:
+   - `AcessorXPSOA.postman_collection.json`
+2. Execute em ordem:
+   - **Clientes → Criar Cliente**
+   - **Ativos → Criar Ativo**
+   - **Recomendação → Gerar Recomendação**
+4. Inspecione as respostas e payloads retornados.
 
-* Java JDK 17
-* Maven 3.6+
-* (Opcional) Postman / HTTP client
-
-   * **Swagger UI**: `http://localhost:8080/swagger-ui.html`
-
----
-
-## 🛠️ Estrutura do Projeto
-
-```text
-src/
-├─ main/
-│  ├─ java/com/xpinc/assessor/
-│  │   ├ AssessorVirtualApplication.java
-│  │   ├ config/SwaggerConfig.java
-│  │   ├ controller/  # Endpoints REST
-│  │   ├ dto/         # Data Transfer Objects
-│  │   ├ domain/      # Modelos de domínio
-│  │   ├ exception/   # Tratamento de erros
-│  │   ├ service/     # Lógica de negócio (InMemory)
-│  │   ├ service/strategy # Estratégias de recomendação
-│  │   └ util/XAIUtil.java
-│  └─ resources/
-│      └ application.properties
-└─ pom.xml
+### Opção B — **Console do H2**
+1. Acesse `http://localhost:8080/h2`
+2. Rode:
+```sql
+SELECT * FROM CLIENTES;
+SELECT * FROM ATIVOS;
+SELECT * FROM FLYWAY_SCHEMA_HISTORY;
 ```
 
----
+## 📡 Exemplos de requisições e respostas
+### Criar Cliente
+**POST** `/api/clientes`
+```json
+{
+  "nome":"Pedro",
+  "cpf":"12345678901",
+  "perfil":"MODERADO"
+}
+```
+**201 Created**
+```json
+{
+  "id": 1,
+  "nome": "Pedro",
+  "cpf": "12345678901",
+  "perfil": "MODERADO"
+}
+```
 
-## 🔌 Endpoints
+### Criar Ativo
+**POST** `/api/ativos`
+```json
+{
+  "nome":"ETF BOVA11",
+  "classe":"RENDA_VARIAVEL",
+  "retornoHistorico":10.2,
+  "liquidezDias":2
+}
+```
+**201 Created** — corpo com o ativo criado.
 
-Base URL: `http://localhost:8080/api`
+### Gerar Recomendação
+**POST** `/api/recomendacoes`
+```json
+{ "clienteId": 1 }
+```
+**200 OK**
+```json
+{
+  "risco":"MODERADO",
+  "alocacao":[
+    {"classe":"RENDA_FIXA","percentual":50.0},
+    {"classe":"RENDA_VARIAVEL","percentual":25.0},
+    {"classe":"MULTIMERCADO","percentual":15.0},
+    {"classe":"CAMBIAL","percentual":10.0}
+  ],
+  "explicacao":"..."
+}
+```
 
-### Ativos
+## 🧱 Tecnologias
+- **Java 17**, **Spring Boot 3** (Web, JPA, Validation)
+- **H2 Database**, **Flyway**
+- **Lombok** (opcional), **springdoc-openapi** (opcional)
 
-| Método | Rota           | Descrição                |
-| ------ | -------------- | ------------------------ |
-| GET    | `/ativos`      | Lista todos os ativos    |
-| GET    | `/ativos/{id}` | Busca ativo por ID       |
-| POST   | `/ativos`      | Cria novo ativo          |
-| PUT    | `/ativos/{id}` | Atualiza ativo existente |
-| DELETE | `/ativos/{id}` | Remove ativo             |
+## 🧰 Estrutura
+- `controller/` — endpoints REST (`AtivoController`, `ClienteController`, `RecomendacaoController`)
+- `service/` — regras de negócio + transações
+- `repository/` — Spring Data JPA
+- `dto/` e `mapper/` — transporte/mapeamento
+- `domain/` — entidades e VOs
+- `exception/` — `ResourceNotFoundException`, `GlobalExceptionHandler`
+- `db/migration/` — scripts Flyway `Vx__...sql`
 
-### Clientes
-
-| Método | Rota             | Descrição                  |
-| ------ | ---------------- | -------------------------- |
-| GET    | `/clientes`      | Lista todos os clientes    |
-| GET    | `/clientes/{id}` | Busca cliente por ID       |
-| POST   | `/clientes`      | Cria novo cliente          |
-| PUT    | `/clientes/{id}` | Atualiza cliente existente |
-| DELETE | `/clientes/{id}` | Remove cliente             |
-
-### Variáveis Macro
-
-| Método | Rota                    | Descrição                         |
-| ------ | ----------------------- | --------------------------------- |
-| GET    | `/variaveis-macro`      | Lista variáveis macro             |
-| GET    | `/variaveis-macro/{id}` | Busca variável macro por ID       |
-| POST   | `/variaveis-macro`      | Cria variável macro               |
-| PUT    | `/variaveis-macro/{id}` | Atualiza variável macro existente |
-| DELETE | `/variaveis-macro/{id}` | Remove variável macro             |
-
-### Recomendações
-
-| Método | Rota             | Payload              |
-| ------ | ---------------- | -------------------- |
-| POST   | `/recomendacoes` | `{ "clienteId": 1 }` |
-
----
-
-## 📖 Funcionamento
-
-1. **Serviços InMemory**: usam `Map<Long, Entidade>` para CRUD.
-2. **ID sequencial**: cada service gera IDs automaticamente.
-3. **Estratégias** (`Conservador`, `Moderado`, `Agressivo`): implementam `RecomendacaoStrategy`.
-4. **StrategyFactory**: injeta todas as estratégias e seleciona conforme perfil.
-5. **XAIUtil**: gera explicação simples para alocação.
+## ✅ Check de qualidade
+- Padrão de respostas com `ResponseEntity`
+- Validações em DTOs e parâmetros
+- Tratamento de erro consistente (400/404/409/500)
+- Migrations versionadas e `ddl-auto: validate`
