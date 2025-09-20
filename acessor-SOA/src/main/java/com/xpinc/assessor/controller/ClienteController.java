@@ -1,56 +1,53 @@
 package com.xpinc.assessor.controller;
 
-import com.xpinc.assessor.domain.Cliente;
 import com.xpinc.assessor.dto.ClienteDTO;
 import com.xpinc.assessor.service.ClienteService;
-import com.xpinc.assessor.exception.ResourceNotFoundException;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/clientes")
+@Validated
 public class ClienteController {
-    private final ClienteService service;
-    public ClienteController(ClienteService service) { this.service = service; }
+	private final ClienteService service;
 
-    @GetMapping
-    public List<ClienteDTO> listar() {
-        return service.findAll().stream()
-            .map(c -> new ClienteDTO(c.getId(), c.getNome(), c.getPerfil(), c.getLiquidezDisponivel(), c.getObjetivos()))
-            .collect(Collectors.toList());
-    }
+	public ClienteController(ClienteService service) {
+		this.service = service;
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ClienteDTO> buscar(@PathVariable Long id) {
-        return service.findById(id)
-            .map(c -> ResponseEntity.ok(new ClienteDTO(c.getId(), c.getNome(), c.getPerfil(), c.getLiquidezDisponivel(), c.getObjetivos())))
-            .orElse(ResponseEntity.notFound().build());
-    }
+	@GetMapping
+	public List<ClienteDTO> listar() {
+		return service.findAll();
+	}
 
-    @PostMapping
-    public ResponseEntity<ClienteDTO> criar(@RequestBody ClienteDTO dto) {
-        Cliente c = service.save(new Cliente(null, dto.getNome(), dto.getPerfil(), dto.getLiquidezDisponivel(), dto.getObjetivos()));
-        URI uri = URI.create("/api/clientes/" + c.getId());
-        return ResponseEntity.created(uri).body(new ClienteDTO(c.getId(), c.getNome(), c.getPerfil(), c.getLiquidezDisponivel(), c.getObjetivos()));
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<ClienteDTO> buscar(@PathVariable @Positive Long id) {
+		return service.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ClienteDTO> atualizar(@PathVariable Long id, @RequestBody ClienteDTO dto) {
-        if (!service.findById(id).isPresent()) {
-            throw new ResourceNotFoundException("Cliente não encontrado");
-        }
-        Cliente c = new Cliente(id, dto.getNome(), dto.getPerfil(), dto.getLiquidezDisponivel(), dto.getObjetivos());
-        service.save(c);
-        return ResponseEntity.ok(new ClienteDTO(c.getId(), c.getNome(), c.getPerfil(), c.getLiquidezDisponivel(), c.getObjetivos()));
-    }
+	@PostMapping
+	public ResponseEntity<ClienteDTO> criar(@Valid @RequestBody ClienteDTO dto) {
+		var saved = service.criar(dto);
+		return ResponseEntity.created(URI.create("/api/clientes/" + saved.getId())).body(saved);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<ClienteDTO> atualizar(@PathVariable @Positive Long id, @Valid @RequestBody ClienteDTO dto) {
+		var updated = service.atualizar(id, dto);
+		return ResponseEntity.ok(updated);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deletar(@PathVariable @Positive Long id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 }

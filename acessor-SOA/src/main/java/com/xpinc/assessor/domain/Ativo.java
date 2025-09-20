@@ -1,25 +1,69 @@
 package com.xpinc.assessor.domain;
 
-public class Ativo {
-    private Long id;
-    private String nome;
-    private ClasseAtivo classe;
-    private double retornoHistorico;
-    private int liquidezDias;
+import jakarta.persistence.*;
 
-    public Ativo() {}
-    public Ativo(Long id, String nome, ClasseAtivo classe, double retornoHistorico, int liquidezDias) {
-        this.id = id; this.nome = nome; this.classe = classe;
-        this.retornoHistorico = retornoHistorico; this.liquidezDias = liquidezDias;
-    }
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public ClasseAtivo getClasse() { return classe; }
-    public void setClasse(ClasseAtivo classe) { this.classe = classe; }
-    public double getRetornoHistorico() { return retornoHistorico; }
-    public void setRetornoHistorico(double retornoHistorico) { this.retornoHistorico = retornoHistorico; }
-    public int getLiquidezDias() { return liquidezDias; }
-    public void setLiquidezDias(int liquidezDias) { this.liquidezDias = liquidezDias; }
+@Entity
+@Table(name = "ativos")
+public class Ativo {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(nullable = false, length = 120)
+	private String nome;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 20)
+	private ClasseAtivo classe;
+
+	@Column(name = "retorno_historico", nullable = false)
+	private double retornoHistorico;
+
+	@Column(name = "liquidez_dias", nullable = false)
+	private int liquidezDias;
+
+	public Ativo() {
+	}
+
+	// GETTERS
+	public Long getId() {
+		return id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public ClasseAtivo getClasse() {
+		return classe;
+	}
+
+	public double getRetornoHistorico() {
+		return retornoHistorico;
+	}
+
+	public int getLiquidezDias() {
+		return liquidezDias;
+	}
+
+	// SETTERS
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public void setClasse(ClasseAtivo classe) {
+		this.classe = classe;
+	}
+
+	public void setRetornoHistorico(double retornoHistorico) {
+		this.retornoHistorico = retornoHistorico;
+	}
+
+	public void setLiquidezDias(int liquidezDias) {
+		this.liquidezDias = liquidezDias;
+	}
 }

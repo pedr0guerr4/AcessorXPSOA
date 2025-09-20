@@ -1,15 +1,18 @@
 package com.xpinc.assessor.service.strategy;
 
-import com.xpinc.assessor.domain.Carteira;
-import com.xpinc.assessor.domain.Cliente;
+import com.xpinc.assessor.domain.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 @Component
-public class ConservadorStrategy implements RecomendacaoStrategy {
-    @Override
-    public Carteira recomendar(Cliente cliente) {
-        // 100% renda fixa, ex.
-        return new Carteira(Collections.emptyMap());
-    }
+public class ConservadorStrategy implements Strategy {
+	@Override
+	public PerfilInvestidor perfil() {
+		return PerfilInvestidor.CONSERVADOR;
+	}
+
+	@Override
+	public Carteira recomendar(Cliente cliente) {
+		// TODO: regra real; dummy de exemplo:
+		return Carteira.conservadoraPadrao();
+	}
 }

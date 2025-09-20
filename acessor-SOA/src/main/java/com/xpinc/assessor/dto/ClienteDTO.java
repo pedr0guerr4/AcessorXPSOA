@@ -2,25 +2,61 @@ package com.xpinc.assessor.dto;
 
 import com.xpinc.assessor.domain.PerfilInvestidor;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class ClienteDTO {
-    private Long id;
-    private String nome;
-    private PerfilInvestidor perfil;
-    private double liquidezDisponivel;
-    private String objetivos;
-    public ClienteDTO() {}
-    public ClienteDTO(Long id, String nome, PerfilInvestidor perfil, double liquidezDisponivel, String objetivos) {
-        this.id = id; this.nome = nome; this.perfil = perfil;
-        this.liquidezDisponivel = liquidezDisponivel; this.objetivos = objetivos;
-    }
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public PerfilInvestidor getPerfil() { return perfil; }
-    public void setPerfil(PerfilInvestidor perfil) { this.perfil = perfil; }
-    public double getLiquidezDisponivel() { return liquidezDisponivel; }
-    public void setLiquidezDisponivel(double liquidezDisponivel) { this.liquidezDisponivel = liquidezDisponivel; }
-    public String getObjetivos() { return objetivos; }
-    public void setObjetivos(String objetivos) { this.objetivos = objetivos; }
+	private Long id;
+	@NotBlank
+	@Size(max = 120)
+	private String nome;
+	@NotBlank
+	@Size(max = 14)
+	private String cpf;
+	@NotNull
+	private PerfilInvestidor perfil;
+
+	public ClienteDTO() {
+	}
+
+	public ClienteDTO(Long id, String nome, String cpf, PerfilInvestidor perfil) {
+		this.id = id;
+		this.nome = nome;
+		this.cpf = cpf;
+		this.perfil = perfil;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public PerfilInvestidor getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(PerfilInvestidor perfil) {
+		this.perfil = perfil;
+	}
+
 }

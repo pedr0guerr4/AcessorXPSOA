@@ -1,5 +1,5 @@
 package com.xpinc.assessor.domain;
 
 public enum PerfilInvestidor {
-    CONSERVADOR, MODERADO, AGRESSIVO
+    CONSERVADOR, MODERADO, ARROJADO
 }
