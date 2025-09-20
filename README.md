@@ -15,7 +15,6 @@ Sprint 3 de ARQUITETURA ORIENTADA A SERVICOS E WEB SERVICES.
 - **Erros:** `@RestControllerAdvice` com payload consistente.
 - **Interface de Acesso:** 
   - **Postman Collection** e **Environment** (prontos neste repositório/artefato).
-  - Alternativa: **cURL** (script `demo.sh`) e **H2 Console**
 
 ## ⚙️ Requisitos
 - JDK 17
