@@ -1,0 +1,485 @@
+{
+  "info": {
+    "_postman_id": "40a09e3c-9728-4e02-8b1a-7dd11a8f7aa5",
+    "name": "AcessorXPSOA - API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Coleção completa de endpoints do projeto AcessorXPSOA (H2, CRUDs e Recomendação)."
+  },
+  "item": [
+    {
+      "name": "Ativos",
+      "item": [
+        {
+          "name": "Criar Ativo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ativos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ativos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"ETF BOVA11\",\n  \"classe\": \"RENDA_VARIAVEL\",\n  \"retornoHistorico\": 10.2,\n  \"liquidezDias\": 2\n}"
+            },
+            "description": "Cria um ativo."
+          }
+        },
+        {
+          "name": "Listar Ativos (paginado)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ativos?page=0&size=20&sort=id,asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ativos"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            },
+            "description": "Lista paginada de ativos."
+          }
+        },
+        {
+          "name": "Buscar Ativo por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ativos/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ativos",
+                ":id"
+              ]
+            },
+            "description": "Substitua :id por um ID válido."
+          }
+        },
+        {
+          "name": "Atualizar Ativo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ativos/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ativos",
+                ":id"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"nome\": \"ETF BOVA11\",\n  \"classe\": \"RENDA_VARIAVEL\",\n  \"retornoHistorico\": 10.8,\n  \"liquidezDias\": 2\n}"
+            },
+            "description": "Atualiza um ativo existente."
+          }
+        },
+        {
+          "name": "Deletar Ativo",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ativos/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ativos",
+                ":id"
+              ]
+            },
+            "description": "Remove um ativo por ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "Criar Cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Pedro\",\n  \"cpf\": \"12345678901\",\n  \"perfil\": \"MODERADO\"\n}"
+            },
+            "description": "Cria um cliente."
+          }
+        },
+        {
+          "name": "Listar Clientes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes"
+              ]
+            },
+            "description": "Lista clientes."
+          }
+        },
+        {
+          "name": "Buscar Cliente por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes",
+                ":id"
+              ]
+            },
+            "description": "Substitua :id por um ID válido."
+          }
+        },
+        {
+          "name": "Atualizar Cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes",
+                ":id"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"nome\": \"Pedro Silva\",\n  \"cpf\": \"12345678901\",\n  \"perfil\": \"ARROJADO\"\n}"
+            },
+            "description": "Atualiza um cliente existente."
+          }
+        },
+        {
+          "name": "Deletar Cliente",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes",
+                ":id"
+              ]
+            },
+            "description": "Remove um cliente por ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recomendação",
+      "item": [
+        {
+          "name": "Gerar Recomendação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/recomendacoes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "recomendacoes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clienteId\": 1\n}"
+            },
+            "description": "Gera uma carteira recomendada para o cliente informado."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Variáveis Macro (opcional)",
+      "item": [
+        {
+          "name": "Criar Variáveis Macro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/variaveis-macro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "variaveis-macro"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"taxaJuros\": 12.5,\n  \"cambio\": 5.2,\n  \"tributos\": 3.1\n}"
+            },
+            "description": "Cria um registro de variáveis macro."
+          }
+        },
+        {
+          "name": "Listar Variáveis Macro",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/variaveis-macro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "variaveis-macro"
+              ]
+            },
+            "description": "Lista registros de variáveis macro."
+          }
+        },
+        {
+          "name": "Buscar Variáveis Macro por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/variaveis-macro/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "variaveis-macro",
+                ":id"
+              ]
+            },
+            "description": "Substitua :id por um ID válido."
+          }
+        },
+        {
+          "name": "Atualizar Variáveis Macro",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/variaveis-macro/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "variaveis-macro",
+                ":id"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"taxaJuros\": 13.0,\n  \"cambio\": 5.1,\n  \"tributos\": 3.0\n}"
+            },
+            "description": "Atualiza um registro de variáveis macro existente."
+          }
+        },
+        {
+          "name": "Deletar Variáveis Macro",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/variaveis-macro/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "variaveis-macro",
+                ":id"
+              ]
+            },
+            "description": "Remove um registro por ID."
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.variables.set('ts', Date.now());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test('Status code é 2xx', function () { pm.response.to.be.success; });"
+        ]
+      }
+    }
+  ]
+}
