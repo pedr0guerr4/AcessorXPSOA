@@ -6,6 +6,7 @@ import com.xpinc.assessor.mapper.VariaveisMacroMapper;
 import com.xpinc.assessor.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/variaveis-macro")
+@PreAuthorize("hasRole('USER')")
 public class VariaveisMacroController {
 
 	private final VariaveisMacroService service;
@@ -23,6 +25,7 @@ public class VariaveisMacroController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<VariaveisMacroDTO> listar() {
 		return service.findAll().stream().map(VariaveisMacroMapper::toDTO).collect(Collectors.toList());
 	}
@@ -34,6 +37,7 @@ public class VariaveisMacroController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<VariaveisMacroDTO> criar(@Valid @RequestBody VariaveisMacroDTO dto) {
 		var v = service.save(dto);
 		var body = VariaveisMacroMapper.toDTO(v);
@@ -41,6 +45,7 @@ public class VariaveisMacroController {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<VariaveisMacroDTO> atualizar(@PathVariable Long id,
 			@Valid @RequestBody VariaveisMacroDTO dto) {
 		if (service.findById(id).isEmpty())
@@ -51,6 +56,7 @@ public class VariaveisMacroController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> deletar(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();

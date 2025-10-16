@@ -19,7 +19,15 @@ spring:
     console:
       enabled: true
       path: /h2
+  security:
+    filter:
+      dispatcher-types: REQUEST		
 server:
   error:
     include-message: always
     include-binding-errors: always
+app:
+ security:
+  jwt:
+   secret: "troque-por-uma-chave-secreta-bem-grande-256bits" # use ENV em PROD
+   expiration: 3600000 # 1h em ms

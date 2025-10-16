@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/clientes")
 @Validated
+@PreAuthorize("hasRole('ADMIN')")
 public class ClienteController {
 	private final ClienteService service;
 
