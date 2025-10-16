@@ -1,81 +1,105 @@
-# AcessorXPSOA — Serviço de Assessoria (SOA + Web Services)
+# 🏦 AcessorXPSOA — Serviço de Assessoria (SOA + Web Services)
 
-Sprint 3 de ARQUITETURA ORIENTADA A SERVICOS E WEB SERVICES. 
+Sprint 4 de **Arquitetura Orientada a Serviços e Web Services** — FIAP  
 
-## Alunos:
-* Bruno Venturi Lopes Vieira - 99431
-* Guilherme Alves de Lima - 550433
-* Pedro Guerra de Souza Freitas - 99526
-* Leonardo de Oliveira Ruiz - 98901
+---
+
+## 👥 Alunos
+- Bruno Venturi Lopes Vieira – 99431  
+- Guilherme Alves de Lima – 550433  
+- Pedro Guerra de Souza Freitas – 99526  
+- Leonardo de Oliveira Ruiz – 98901  
+
+---
 
 ## 👀 Visão Geral
-- **Domínio:** Ativos, Clientes, Recomendação de Carteira (Conservador/Moderado/Arrojado).
-- **Banco:** H2 (memória) versionado com Flyway (`ddl-auto: validate`).
-- **Validações:** DTOs com `jakarta.validation` e params com `@Validated`.
-- **Erros:** `@RestControllerAdvice` com payload consistente.
-- **Interface de Acesso:** 
-  - **Postman Collection** e **Environment** (prontos neste repositório/artefato).
+
+O **AcessorXPSOA** é um sistema de **assessoria de investimentos** que:
+- Gerencia **Ativos**, **Clientes** e **Variáveis Macroeconômicas**
+- Gera **recomendações de carteira** conforme o perfil do investidor
+- Implementa **autenticação e autorização seguras (JWT + Spring Security)**
+- Segue princípios de **SOLID**, **Clean Code** e **arquitetura em camadas**
+- Inclui **documentação automática** (Swagger / SpringDoc)
+- Possui **testes unitários e de integração** automatizados
+
+---
 
 ## ⚙️ Requisitos
-- JDK 17
-- Maven 3.9+
+- **JDK 17**  
+- **Maven 3.9+**
+
+---
 
 ## ▶️ Como executar
 ```bash
 mvn clean spring-boot:run
 ```
 Verifique no log: `Flyway ... Successfully applied ...` e sem exceções.
-H2 Console: `http://localhost:8080/h2`  
-JDBC: `jdbc:h2:mem:assessor` | user: `sa` | senha: *(vazio)*
+
+- H2 Console → [http://localhost:8080/h2](http://localhost:8080/h2)  
+  - JDBC URL : `jdbc:h2:mem:assessor`  
+  - User : `sa`  
+  - Password : *(vazio)*  
+
+---
+
+## 🔐 Segurança e Autenticação (JWT)
+
+A aplicação agora é **stateless**, com **Spring Security + JWT**.  
+Senhas são criptografadas com **BCryptPasswordEncoder**.
+
+### Endpoints públicos
+| Método | Rota | Descrição |
+|--------|------|------------|
+| `POST` | `/auth/signup` | Cria um novo usuário |
+| `POST` | `/auth/login`  | Autentica e retorna um token JWT |
+
+**Exemplo de login**
+```http
+POST /auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
+**Resposta**
+```json
+{ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..." }
+```
+Use o token nas próximas requisições:
+```
+Authorization: Bearer <token>
+```
+
+### Perfis de acesso
+| Papel | Permissões |
+|-------|-------------|
+| `ROLE_USER` | Consultar ativos, variáveis macro e gerar recomendações |
+| `ROLE_ADMIN` | CRUD completo em todos os recursos |
+
+---
 
 ## 🔌 Endpoints principais
-`/api/ativos` — CRUD  
-`/api/clientes` — CRUD  
-`/api/recomendacoes` — Geração de carteira por perfil do cliente  
-`/api/variaveis-macro` (EM DESENVOLVIMENTO) — CRUD  
 
-## 🧪 Como **demonstrar o consumo** (Interface de acesso)
-### Opção A — **Postman**
-1. Importe o arquivo:
-   - `AcessorXPSOA.postman_collection.json`
-2. Execute em ordem:
-   - **Clientes → Criar Cliente**
-   - **Ativos → Criar Ativo**
-   - **Recomendação → Gerar Recomendação**
-4. Inspecione as respostas e payloads retornados.
+| Módulo | Rota base | Papel | Descrição |
+|--------|------------|--------|------------|
+| **Ativos** | `/api/ativos` | USER (GET) / ADMIN (CRUD) | Gerencia ativos financeiros |
+| **Clientes** | `/api/clientes` | ADMIN | CRUD de clientes |
+| **Variáveis Macro** | `/api/variaveis-macro` | USER (GET) / ADMIN (CRUD) | Dados macroeconômicos |
+| **Recomendações** | `/api/recomendacoes` | USER | Gera carteira personalizada |
 
-### Opção B — **Console do H2**
-1. Acesse `http://localhost:8080/h2`
-2. Rode:
-```sql
-SELECT * FROM CLIENTES;
-SELECT * FROM ATIVOS;
-SELECT * FROM FLYWAY_SCHEMA_HISTORY;
-```
+---
 
-## 📡 Exemplos de requisições e respostas
-### Criar Cliente
-**POST** `/api/clientes`
-```json
-{
-  "nome":"Pedro",
-  "cpf":"12345678901",
-  "perfil":"MODERADO"
-}
-```
-**201 Created**
-```json
-{
-  "id": 1,
-  "nome": "Pedro",
-  "cpf": "12345678901",
-  "perfil": "MODERADO"
-}
-```
+## 📡 Exemplos de requisições
 
 ### Criar Ativo
-**POST** `/api/ativos`
-```json
+```http
+POST /api/ativos
+Authorization: Bearer <token>
+Content-Type: application/json
+
 {
   "nome":"ETF BOVA11",
   "classe":"RENDA_VARIAVEL",
@@ -83,12 +107,15 @@ SELECT * FROM FLYWAY_SCHEMA_HISTORY;
   "liquidezDias":2
 }
 ```
-**201 Created** — corpo com o ativo criado.
 
 ### Gerar Recomendação
-**POST** `/api/recomendacoes`
-```json
-{ "clienteId": 1 }
+```http
+POST /api/recomendacoes
+Authorization: Bearer <token>
+
+{
+  "clienteId": 1
+}
 ```
 **200 OK**
 ```json
@@ -104,22 +131,84 @@ SELECT * FROM FLYWAY_SCHEMA_HISTORY;
 }
 ```
 
+---
+
 ## 🧱 Tecnologias
-- **Java 17**, **Spring Boot 3** (Web, JPA, Validation)
-- **H2 Database**, **Flyway**
-- **Lombok** (opcional), **springdoc-openapi** (opcional)
+- **Java 17**
+- **Spring Boot 3.1.12**
+  - Web, Data JPA, Validation, Security
+- **H2 Database** + **Flyway**
+- **JWT (JJWT 0.11.5)** + **BCrypt**
+- **SpringDoc OpenAPI 3** / **Swagger UI**
+- **JUnit 5 + Mockito**
 
-## 🧰 Estrutura
-- `controller/` — endpoints REST (`AtivoController`, `ClienteController`, `RecomendacaoController`)
-- `service/` — regras de negócio + transações
-- `repository/` — Spring Data JPA
-- `dto/` e `mapper/` — transporte/mapeamento
-- `domain/` — entidades e VOs
-- `exception/` — `ResourceNotFoundException`, `GlobalExceptionHandler`
-- `db/migration/` — scripts Flyway `Vx__...sql`
+---
 
-## ✅ Check de qualidade
-- Padrão de respostas com `ResponseEntity`
-- Validações em DTOs e parâmetros
-- Tratamento de erro consistente (400/404/409/500)
-- Migrations versionadas e `ddl-auto: validate`
+## 🧰 Estrutura do Projeto
+```
+acessor-SOA/
+├── controller/        # Endpoints REST
+├── service/           # Regras de negócio (Strategy)
+├── repository/        # Spring Data JPA
+├── domain/            # Entidades e Enums
+├── dto/ & mapper/     # Transporte e mapeamento
+├── config/            # Segurança e OpenAPI
+├── exception/         # Tratamento global de erros
+└── resources/db/migration/ # Scripts Flyway (V1 – V5)
+```
+
+---
+
+## 🧪 Testes Automatizados
+
+### Unitários
+- `RecomendacaoServiceTest` → valida uso do StrategyFactory  
+- `JwtServiceTest` → gera e valida tokens JWT  
+
+### Integração
+- `AuthIntegrationTest` → testa login e acesso a rotas protegidas  
+
+**Executar**
+```bash
+mvn test
+```
+
+---
+
+## 📄 Documentação (OpenAPI + Swagger)
+
+- Documentação automática via **SpringDoc OpenAPI 3**
+- Esquema de segurança JWT (`bearerAuth`)
+- URL: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)  
+- Clique em **Authorize 🔒** e cole seu token JWT  
+
+---
+
+## ✅ Boas Práticas Implementadas
+
+| Conceito | Aplicação |
+|-----------|-----------|
+| **SOLID** | Camadas bem definidas e uso de interfaces |
+| **Polimorfismo** | Estratégias de recomendação (Conservador, Moderado, Arrojado) |
+| **Injeção de Dependência** | Via Spring Context (`@Service`, `@Repository`) |
+| **Validação** | `jakarta.validation` em DTOs |
+| **Criptografia** | Senhas com `BCryptPasswordEncoder` |
+| **JWT Stateless** | Autenticação sem sessão |
+| **Flyway** | Versionamento do banco de dados |
+| **Tratamento Global de Erros** | `GlobalExceptionHandler` padronizado |
+| **Testabilidade** | Testes unitários e de integração com Mockito |
+
+---
+
+## 🧭 Execução Rápida
+
+| Ação | Comando / URL |
+|------|----------------|
+| Subir aplicação | `mvn spring-boot:run` |
+| Banco em memória | `http://localhost:8080/h2` |
+| Swagger UI | `http://localhost:8080/swagger-ui.html` |
+| Criar usuário | `POST /auth/signup` |
+| Login JWT | `POST /auth/login` |
+| Executar testes | `mvn test` |
+
+---
