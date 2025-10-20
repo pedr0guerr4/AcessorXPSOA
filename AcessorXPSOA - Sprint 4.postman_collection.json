@@ -1,0 +1,597 @@
+{
+	"info": {
+		"_postman_id": "00adb658-3fb9-4196-9874-01bf08e48b48",
+		"name": "AcessorXPSOA - Sprint 4",
+		"description": "Coleção Postman completa do AcessorXPSOA (Sprint 4) com autenticação JWT, CRUDs e recomendação.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43508351"
+	},
+	"item": [
+		{
+			"name": "🔐 Auth",
+			"item": [
+				{
+					"name": "Signup (criar usuário)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin\",\n  \"roles\": [\n    \"ROLE_ADMIN\",\n    \"ROLE_USER\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						},
+						"description": "Cria um usuário administrador + user."
+					},
+					"response": []
+				},
+				{
+					"name": "Login (gera JWT e salva em {{token}})",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+									"const json = pm.response.json();",
+									"pm.collectionVariables.set('token', json.token);",
+									"pm.test('Token definido', function () { pm.expect(pm.collectionVariables.get('token')).to.be.a('string').and.not.empty; });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Autentica e armazena o token JWT na variável de coleção {{token}}."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📈 Ativos",
+			"item": [
+				{
+					"name": "Listar Ativos (USER)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Ativo (ADMIN)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('201 Created', function(){ pm.response.to.have.status(201); });",
+									"try { const id = pm.response.json().id; pm.collectionVariables.set('ativoId', id); } catch(e) {}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"ETF BOVA11\",\n  \"classe\": \"RENDA_VARIAVEL\",\n  \"retornoHistorico\": 10.2,\n  \"liquidezDias\": 2\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Ativo por ID (USER)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos/{{ativoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos",
+								"{{ativoId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Ativo (ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"ETF BOVA11\",\n  \"classe\": \"RENDA_VARIAVEL\",\n  \"retornoHistorico\": 11.0,\n  \"liquidezDias\": 2\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos/{{ativoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos",
+								"{{ativoId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Ativo (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/ativos/{{ativoId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"ativos",
+								"{{ativoId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "👤 Clientes (ADMIN)",
+			"item": [
+				{
+					"name": "Listar Clientes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Cliente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('201 Created', function(){ pm.response.to.have.status(201); });",
+									"try { const id = pm.response.json().id; pm.collectionVariables.set('clienteId', id); } catch(e) {}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Pedro\",\n  \"cpf\": \"12345678901\",\n  \"perfil\": \"MODERADO\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Cliente por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								"{{clienteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Cliente",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Pedro Atualizado\",\n  \"cpf\": \"12345678901\",\n  \"perfil\": \"CONSERVADOR\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								"{{clienteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clientes",
+								"{{clienteId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "💹 Variáveis Macro",
+			"item": [
+				{
+					"name": "Listar Variáveis (USER)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Variável (ADMIN)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('201 Created', function(){ pm.response.to.have.status(201); });",
+									"try { const id = pm.response.json().id; pm.collectionVariables.set('variavelMacroId', id); } catch(e) {}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ipca\": 4.5,\n  \"selic\": 10.25,\n  \"cambio\": 5.15,\n  \"referencia\": \"2025-06-01\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Variável por ID (USER)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro/{{variavelMacroId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro",
+								"{{variavelMacroId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Variável (ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ipca\": 4.3,\n  \"selic\": 10.0,\n  \"cambio\": 5.12,\n  \"referencia\": \"2025-07-01\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro/{{variavelMacroId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro",
+								"{{variavelMacroId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Variável (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/variaveis-macro/{{variavelMacroId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"variaveis-macro",
+								"{{variavelMacroId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🧠 Recomendações",
+			"item": [
+				{
+					"name": "Gerar Recomendação (USER)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"clienteId\": \"{{clienteId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/recomendacoes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"recomendacoes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "clienteId",
+			"value": "1"
+		},
+		{
+			"key": "ativoId",
+			"value": "1"
+		},
+		{
+			"key": "variavelMacroId",
+			"value": "1"
+		}
+	]
+}
